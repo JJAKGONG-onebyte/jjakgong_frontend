@@ -5,7 +5,7 @@ type InputProps = {
   type?: "text" | "email" | "password";
 };
 
-// TODO: 피그마에서 높이, 반경, 패딩, 글자 스타일, 기본 상태의 배경·테두리 색 확인
+
 function Input({ value, onChange, placeholder, type = "text" }: InputProps) {
   return (
     <input

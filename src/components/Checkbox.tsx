@@ -5,7 +5,7 @@ type CheckboxProps = {
   onClick?: () => void;
 };
 
-// TODO: 피그마에서 크기, 반경, 안 됨 상태의 색 확인
+
 function Checkbox({ checked = false, onClick }: CheckboxProps) {
   return (
     <button

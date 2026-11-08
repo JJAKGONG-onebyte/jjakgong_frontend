@@ -4,7 +4,7 @@ type SegmentedToggleProps = {
   onChange: (value: string) => void;
 };
 
-// TODO: 피그마에서 높이, 패딩, 글자 스타일, 바깥 테두리 색 확인
+
 function SegmentedToggle({ options, value, onChange }: SegmentedToggleProps) {
   return (
     <div

@@ -7,7 +7,7 @@ type CheckCircleProps = {
   label?: ReactNode;
 };
 
-// TODO: 피그마에서 크기, 글자 스타일, 안 됨 상태의 색 확인
+
 function CheckCircle({ checked = false, onClick, label }: CheckCircleProps) {
   return (
     <button

@@ -4,8 +4,6 @@ type SwitchProps = {
   size?: "sm" | "md";
 };
 
-// TODO: 피그마에서 막대·동그라미 크기, 꺼짐 상태의 색 확인
-// 움직일 거리 = 막대 너비 - 동그라미 크기 - 여백 6px
 const sizeStyles = {
   md: {
     track: "w-[52px] h-[28px]",

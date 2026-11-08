@@ -7,7 +7,7 @@ type SelectCardProps = {
   variant?: "outline" | "filled";
 };
 
-// TODO: 피그마에서 반경, 패딩, 테두리 두께, 안 됨 상태의 배경 색 확인
+
 const variantStyles = {
   outline: {
     on: "bg-primary-90 border-primary-10",

@@ -6,7 +6,7 @@ type ChipProps = {
   onClick?: () => void;
 };
 
-// TODO: 피그마에서 높이, 패딩, 글자 스타일, 안 됨 상태의 색 확인
+
 function Chip({ children, selected = false, onClick }: ChipProps) {
   return (
     <button

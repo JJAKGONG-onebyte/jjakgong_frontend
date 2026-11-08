@@ -14,11 +14,11 @@ type ButtonProps = {
 
 const variantStyles = {
   primary: "bg-primary-10 text-white", // 가입하기, 로그인, 저장, 업로드
-  outline: "bg-white border border-neutral-80 text-neutral-70", // 모달 "취소" TODO: 색 확인
+  outline: "bg-white border border-neutral-80 text-neutral-70",
   danger: "bg-ter-80 text-white", // 모달 "삭제"
 };
 
-// 높이는 피그마 확인됨. TODO: 글자 스타일은 버튼 글자를 클릭해서 확인
+
 const sizeStyles = {
   sm: "h-[33px] px-[15px] text-caption",
   lg: "h-[60px] px-6 text-small",
