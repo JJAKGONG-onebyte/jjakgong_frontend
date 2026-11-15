@@ -3,7 +3,7 @@ import AuthLayout from "../../components/AuthLayout";
 import FormField from "../../components/FormField";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import logoTextUrl from "../../assets/icons/logo-text.svg";
+import logoTextUrl from "../../assets/icons/logo-text.png";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
