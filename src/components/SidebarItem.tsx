@@ -18,7 +18,7 @@ function SidebarItem({ icon, label, active = false, onClick }: SidebarItemProps)
         ${
           active
             ? "bg-gradient-to-r from-primary-10 from-35% to-sec-80 bg-origin-border border-transparent text-white font-bold"
-            : "bg-white border-neutral-90 text-neutral-10"
+            : "bg-white border-neutral-90 text-neutral-10 font-normal"
         }`}
     >
       {icon}

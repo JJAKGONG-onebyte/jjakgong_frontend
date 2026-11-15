@@ -36,12 +36,13 @@ module.exports = {
       },
 
       fontSize: {
+        // 자간은 피그마 텍스트 스타일 기준
         extralarge: ["64px", { lineHeight: "76.8px", letterSpacing: "-0.02em" }],
         large: ["48px", { lineHeight: "60px", letterSpacing: "-0.02em" }],
-        base: ["32px", { lineHeight: "43.2px", letterSpacing: "-0.02em" }],
-        body: ["24px", { lineHeight: "33.6px", letterSpacing: "-0.02em" }],
-        small: ["18px", { lineHeight: "27px", letterSpacing: "-0.02em" }],
-        caption: ["14px", { lineHeight: "21px", letterSpacing: "-0.02em" }],
+        base: ["32px", { lineHeight: "43.2px", letterSpacing: "-0.015em" }],
+        body: ["24px", { lineHeight: "33.6px", letterSpacing: "-0.01em" }],
+        small: ["18px", { lineHeight: "27px", letterSpacing: "-0.005em" }],
+        caption: ["14px", { lineHeight: "21px", letterSpacing: "0em" }],
       },
     },
   },

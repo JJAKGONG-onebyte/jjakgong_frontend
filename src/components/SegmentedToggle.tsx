@@ -2,10 +2,15 @@ type SegmentedToggleProps = {
   options: string[];
   value: string;
   onChange: (value: string) => void;
+  size?: "sm" | "lg";
 };
 
+const sizeStyles = {
+  sm: "h-[28px] px-[14px] text-caption",
+  lg: "h-[38px] px-5 text-small", // 학습 설정 - 학습/휴식 시간
+};
 
-function SegmentedToggle({ options, value, onChange }: SegmentedToggleProps) {
+function SegmentedToggle({ options, value, onChange, size = "sm" }: SegmentedToggleProps) {
   return (
     <div
       role="radiogroup"
@@ -21,7 +26,8 @@ function SegmentedToggle({ options, value, onChange }: SegmentedToggleProps) {
             role="radio"
             aria-checked={selected}
             onClick={() => onChange(option)}
-            className={`h-[28px] px-[14px] rounded-full text-caption font-bold transition-colors
+            className={`${sizeStyles[size]} rounded-full text-center transition-colors
+              ${selected || size === "sm" ? "font-bold" : "font-normal"}
               ${selected ? "bg-primary-10 text-white" : "text-neutral-70"}`}
           >
             {option}

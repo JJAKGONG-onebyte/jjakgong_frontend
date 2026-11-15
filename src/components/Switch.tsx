@@ -2,6 +2,7 @@ type SwitchProps = {
   checked?: boolean;
   onClick?: () => void;
   size?: "sm" | "md";
+  ariaLabel?: string;
 };
 
 const sizeStyles = {
@@ -17,7 +18,7 @@ const sizeStyles = {
   },
 };
 
-function Switch({ checked = false, onClick, size = "md" }: SwitchProps) {
+function Switch({ checked = false, onClick, size = "md", ariaLabel }: SwitchProps) {
   const styles = sizeStyles[size];
 
   return (
@@ -25,6 +26,7 @@ function Switch({ checked = false, onClick, size = "md" }: SwitchProps) {
       type="button"
       role="switch"
       aria-checked={checked}
+      aria-label={ariaLabel}
       onClick={onClick}
       className={`inline-flex items-center p-[3px] rounded-full transition-colors
         ${styles.track}
