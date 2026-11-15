@@ -12,7 +12,7 @@ type TimerDialProps = {
 const MINUTES_PER_TURN = 60;
 const SIZE = 300;
 const CENTER = SIZE / 2;
-const RADIUS = 122;
+const RADIUS = 135; // 링이 상자(362px)를 거의 꽉 채우도록 (손잡이가 잘리지 않을 만큼만 여백)
 const STROKE = 22;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 

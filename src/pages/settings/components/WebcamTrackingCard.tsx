@@ -48,11 +48,11 @@ function WebcamTrackingCard({ enabled, onChange }: WebcamTrackingCardProps) {
       </div>
 
       {error ? (
-        <p role="alert" className="mt-4 text-small font-normal text-ter-80">
+        <p role="alert" className="mt-7 text-small font-normal text-ter-80">
           {error}
         </p>
       ) : (
-        <p className="mt-4 text-small font-normal text-primary-10">
+        <p className="mt-7 text-small font-normal text-primary-10">
           영상은 브라우저에서만 분석하며 서버로 전송 · 저장하지 않아요.
         </p>
       )}
