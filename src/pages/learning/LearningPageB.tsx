@@ -13,46 +13,51 @@ function LearningPageB() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#F4F6FF] text-[#0D0D0D]">
       {/* 상단 헤더 */}
-      <header className="relative z-30 flex min-h-[85px] flex-wrap items-center justify-between gap-3 bg-[#F8F9FA] px-4 py-3 shadow-[0_0_10px_#2B52FF] lg:h-[85px] lg:flex-nowrap lg:px-[30px] lg:py-0">
-        {/* 로고 */}
-        <div className="flex shrink-0 items-center gap-2">
-          <img
-            src="/assets/learning/character-head.png"
-            alt=""
-            className="h-[29px] w-[28px]"
-          />
-          <img
-            src="/assets/learning/jjakgong-logo.png"
-            alt="짝공"
-            className="h-[29px] w-[54px]"
-          />
-        </div>
+      <header className="relative z-30 flex min-h-[85px] flex-wrap items-center gap-4 bg-[#F8F9FA] px-4 py-3 shadow-[0_0_10px_#2B52FF] lg:h-[85px] lg:flex-nowrap lg:px-[30px] lg:py-0">
 
-        {/* 선택된 학습 자료 */}
-        <div className="rounded-full bg-[#2B52FF] px-[15px] py-[3px] text-sm text-white lg:absolute lg:left-[137px] lg:text-[18px]">
-          자료 : {mock.materialName}
-        </div>
-
-        {/* 사용자 정보 및 학습 설정 */}
-        <div className="flex flex-wrap items-center justify-end gap-3 lg:gap-6">
-          <span className="rounded-full bg-[#0AE1DA] px-[10px] py-[2px] text-[14px]">
-            {mock.focusTracking ? "집중 트래킹 ON" : "집중 트래킹 OFF"}
-          </span>
-
-          <div className="text-right">
-            <p className="text-[20px] font-bold lg:text-[24px]">
-              {mock.elapsedTime}
-            </p>
-            <p className="text-[15px] text-[#797980] lg:text-[18px]">
-              / {mock.totalTime}
-            </p>
+        {/* 왼쪽: 로고 + 학습 자료 */}
+        <div className="flex shrink-0 items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2">
+            <img
+              src="/assets/learning/character-head.png"
+              alt=""
+              className="h-[29px] w-[28px]"
+            />
+            <img
+              src="/assets/learning/jjakgong-logo.png"
+              alt="짝공"
+              className="h-[29px] w-[54px]"
+            />
           </div>
 
+          <div className="whitespace-nowrap rounded-full bg-[#2B52FF] px-[15px] py-[3px] text-sm text-white lg:text-[18px]">
+            자료 : {mock.materialName}
+          </div>
+          {/* 집중 트래킹 */}
+          <span className="shrink-0 whitespace-nowrap rounded-full bg-[#0AE1DA] px-[10px] py-[2px] text-[14px]">
+            {mock.focusTracking ? "집중 트래킹 ON" : "집중 트래킹 OFF"}
+          </span>
+        </div>
+
+        {/* 학습 시간: 헤더 전체 정중앙 */}
+        <div className="w-full text-center lg:absolute lg:left-1/2 lg:top-1/2 lg:w-auto lg:-translate-x-1/2 lg:-translate-y-1/2">
+          <p className="whitespace-nowrap text-[20px] font-bold lg:text-[24px]">
+            {mock.elapsedTime}
+            <span className="ml-1 text-[15px] font-normal text-[#797980] lg:text-[18px]">
+              / {mock.totalTime}
+            </span>
+          </p>
+        </div>
+
+        {/* 오른쪽: 모드 + 프로필 */}
+        <div className="ml-auto flex min-w-0 flex-wrap items-center justify-end gap-3 lg:flex-nowrap lg:gap-5">
+
           {/* 화면 모드 */}
-          <div className="flex overflow-hidden rounded-full bg-[#F4F6FF]">
+          <div className="flex shrink-0 overflow-hidden rounded-full bg-[#F4F6FF]">
+            {/* 영상 통화 */}
             <button
               type="button"
-              onClick={() => setMode("video")}
+              onClick={() => (window.location.href = "/studyA")}
               className={`rounded-full px-4 py-2 text-[14px] ${
                 mode === "video"
                   ? "bg-[#2B52FF] text-white"
@@ -62,9 +67,10 @@ function LearningPageB() {
               영상 통화
             </button>
 
+            {/* 자료 집중 */}
             <button
               type="button"
-              onClick={() => setMode("material")}
+              onClick={() => (window.location.href = "/studyB")}
               className={`rounded-full px-4 py-2 text-[14px] ${
                 mode === "material"
                   ? "bg-[#2B52FF] text-white"
@@ -75,23 +81,19 @@ function LearningPageB() {
             </button>
           </div>
 
-          <img
-            src="/assets/learning/notifications.svg"
-            alt="알림"
-            className="h-7 w-7"
-          />
+          {/* 프로필 */}
+          <div className="flex shrink-0 items-center gap-2 text-small font-normal text-neutral-10">
+            <img
+              src="/assets/learning/account-circle.svg"
+              alt=""
+              className="h-5 w-5"
+            />
+            <span className="whitespace-nowrap">{mock.userName}</span>
+          </div>
 
-          <img
-            src="/assets/learning/account-circle.svg"
-            alt=""
-            className="h-7 w-7"
-          />
-
-          <span className="whitespace-nowrap text-[16px] lg:text-[18px]">
-            {mock.userName}
-          </span>
         </div>
       </header>
+
 
       {/* 메인 영역 */}
       <main className="grid grid-cols-1 gap-4 px-4 py-4 lg:min-h-[calc(100vh-173px)] lg:grid-cols-[minmax(0,3.35fr)_minmax(260px,1fr)] lg:gap-4 lg:px-[1.5%] lg:py-4">
