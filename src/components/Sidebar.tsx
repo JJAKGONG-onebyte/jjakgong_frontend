@@ -1,6 +1,6 @@
 import SidebarItem from "./SidebarItem";
-import logoIconUrl from "../assets/icons/logo-icon.svg";
-import logoTextUrl from "../assets/icons/logo-text.svg";
+import logoIconUrl from "../assets/icons/logo-icon.png";
+import logoTextUrl from "../assets/icons/logo-text.png";
 import { ReactComponent as HomeIcon } from "../assets/icons/home.svg";
 import { ReactComponent as CalendarIcon } from "../assets/icons/calendar.svg";
 import { ReactComponent as EditIcon } from "../assets/icons/edit.svg";
