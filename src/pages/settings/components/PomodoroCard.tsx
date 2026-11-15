@@ -70,7 +70,7 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
 
   return (
     <SettingsCard title="뽀모도로 타이머" icon={<TimerIcon className="w-[30px] h-[30px]" />}>
-      <div className="mt-6 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:gap-10">
+      <div className="mt-5 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:gap-9">
         <div className="w-full max-w-[362px] shrink-0 lg:w-[clamp(240px,42%,362px)]">
           <TimerDial
             value={minutes}
@@ -81,7 +81,7 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
           />
         </div>
 
-        <div className="flex w-full min-w-0 flex-1 flex-col gap-6">
+        <div className="flex w-full min-w-0 flex-1 flex-col">
           {/* 학습/휴식 전환 */}
           <div className="flex flex-wrap items-center gap-3">
             <SegmentedToggle
@@ -100,7 +100,7 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
           </div>
 
           {/* - [ 50분 ] + */}
-          <div className="flex items-center gap-3">
+          <div className="mt-[38px] flex items-center gap-3">
             <button
               type="button"
               aria-label={`${config.label} ${STEP}분 줄이기`}
@@ -148,7 +148,7 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
           </div>
 
           {/* 빠른 선택 */}
-          <div className="flex flex-wrap gap-2">
+          <div className="mt-[26px] flex flex-wrap gap-2">
             {config.presets.map((preset) => (
               <Chip key={preset} size="lg" selected={minutes === preset} onClick={() => setMinutes(preset)}>
                 {preset}분{preset === config.defaultMinutes && "(기본)"}
@@ -156,20 +156,20 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
             ))}
           </div>
 
-          <p className="text-small font-normal">
+          <p className="mt-9 text-small font-normal">
             <span className="text-primary-10">설정 시간이 지나면 캐릭터가 휴식을 권유해요.</span>
             <br />
             <span className="text-neutral-70">타이머를 강제로 종료하지 않아요.</span>
           </p>
 
-          <div className="flex flex-wrap items-center justify-end gap-3">
-            <span role="status" className="text-caption text-primary-10">
+          <div className="mt-3 flex items-center justify-end gap-5">
+            <span role="status" className="text-caption text-primary-10 empty:hidden">
               {justSaved ? "저장되었어요!" : ""}
             </span>
-            <Button variant="outline" size="lg" onClick={handleReset} className="w-[165px] !font-normal">
+            <Button variant="outline" size="lg" onClick={handleReset} className="w-[165px] min-w-0 shrink !font-normal">
               초기화
             </Button>
-            <Button size="lg" onClick={handleSave} className="w-[165px]">
+            <Button size="lg" onClick={handleSave} className="w-[165px] min-w-0 shrink">
               저장하기
             </Button>
           </div>

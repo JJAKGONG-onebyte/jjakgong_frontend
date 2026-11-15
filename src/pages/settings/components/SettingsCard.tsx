@@ -18,7 +18,7 @@ function SettingsCard({
 }: SettingsCardProps) {
   return (
     <section
-      className={`rounded-[15px] p-6
+      className={`rounded-[15px] px-[38px] py-7
         shadow-[0_0_10px_0_#2B52FF80]
         ${background} ${className}`}
     >
