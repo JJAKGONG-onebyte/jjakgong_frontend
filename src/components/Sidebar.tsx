@@ -29,8 +29,8 @@ function Sidebar({ activeMenu, onMenuClick, onLogout }: SidebarProps) {
     <aside
       className="relative z-10 flex flex-col shrink-0 w-[232px] h-full overflow-hidden
         pt-6 pb-8 bg-neutral-100
-        rounded-tr-2xl border-r-[3px] border-t-[3px] border-gradient-1/30
-        shadow-[4px_0_24px_rgba(43,82,255,0.3)]"
+        rounded-tr-2xl
+        shadow-[0_0_10px_0_#2B52FF]"
     >
       {/* ① 로고: 가운데 정렬 */}
       <div className="flex justify-center px-6">
@@ -41,7 +41,7 @@ function Sidebar({ activeMenu, onMenuClick, onLogout }: SidebarProps) {
       </div>
 
       {/* ② 소개 문구: 왼쪽 정렬, 메뉴와 같은 시작점 */}
-      <p className="mt-4 pl-10 pr-6 text-caption text-neutral-70">
+      <p className="mt-4 pl-10 pr-6 text-caption font-medium text-neutral-70">
         어디서든 함께할 수 있는
         <br />
         나만의 스터디 짝꿍
