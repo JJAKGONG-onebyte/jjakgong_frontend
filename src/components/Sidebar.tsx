@@ -7,6 +7,12 @@ import { ReactComponent as EditIcon } from "../assets/icons/edit.svg";
 import { ReactComponent as DocumentIcon } from "../assets/icons/document.svg";
 import { ReactComponent as CharacterIcon } from "../assets/icons/character.svg";
 import { ReactComponent as LogoutIcon } from "../assets/icons/logout.svg";
+// 선택된 메뉴용 채워진 아이콘
+import { ReactComponent as HomeActiveIcon } from "../assets/icons/home-selected.svg";
+import { ReactComponent as CalendarActiveIcon } from "../assets/icons/date-range.svg";
+import { ReactComponent as EditActiveIcon } from "../assets/icons/edit-square.svg";
+import { ReactComponent as DocumentActiveIcon } from "../assets/icons/assignment.svg";
+import { ReactComponent as CharacterActiveIcon } from "../assets/icons/settings-account-box.svg";
 
 type SidebarProps = {
   activeMenu: string;
@@ -15,13 +21,35 @@ type SidebarProps = {
 };
 
 const iconClass = "w-[18px] h-[18px] shrink-0";
+// 채워진 아이콘은 원본(24px)에 여백이 있어 조금 크게 그리고, 음수 여백으로 글씨 위치는 그대로 유지
+const activeIconClass = "w-[21px] h-[21px] -m-[1.5px] shrink-0";
 
 const menus = [
-  { label: "홈", icon: <HomeIcon className={iconClass} /> },
-  { label: "일정 관리", icon: <CalendarIcon className={iconClass} /> },
-  { label: "학습 설정", icon: <EditIcon className={iconClass} /> },
-  { label: "학습 자료 관리", icon: <DocumentIcon className={iconClass} /> },
-  { label: "캐릭터 설정", icon: <CharacterIcon className={iconClass} /> },
+  {
+    label: "홈",
+    icon: <HomeIcon className={iconClass} />,
+    activeIcon: <HomeActiveIcon className={activeIconClass} />,
+  },
+  {
+    label: "일정 관리",
+    icon: <CalendarIcon className={iconClass} />,
+    activeIcon: <CalendarActiveIcon className={activeIconClass} />,
+  },
+  {
+    label: "학습 설정",
+    icon: <EditIcon className={iconClass} />,
+    activeIcon: <EditActiveIcon className={activeIconClass} />,
+  },
+  {
+    label: "학습 자료 관리",
+    icon: <DocumentIcon className={iconClass} />,
+    activeIcon: <DocumentActiveIcon className={activeIconClass} />,
+  },
+  {
+    label: "캐릭터 설정",
+    icon: <CharacterIcon className={iconClass} />,
+    activeIcon: <CharacterActiveIcon className={activeIconClass} />,
+  },
 ];
 
 function Sidebar({ activeMenu, onMenuClick, onLogout }: SidebarProps) {
@@ -49,15 +77,18 @@ function Sidebar({ activeMenu, onMenuClick, onLogout }: SidebarProps) {
 
       {/* ③ 메뉴: 왼쪽 여백 + 오른쪽이 사이드바 끝에서 잘리도록 */}
       <nav className="mt-[38px] pl-10 -mr-3 flex flex-col gap-2.5">
-        {menus.map((menu) => (
-          <SidebarItem
-            key={menu.label}
-            icon={menu.icon}
-            label={menu.label}
-            active={activeMenu === menu.label}
-            onClick={() => onMenuClick(menu.label)}
-          />
-        ))}
+        {menus.map((menu) => {
+          const active = activeMenu === menu.label;
+          return (
+            <SidebarItem
+              key={menu.label}
+              icon={active && menu.activeIcon ? menu.activeIcon : menu.icon}
+              label={menu.label}
+              active={active}
+              onClick={() => onMenuClick(menu.label)}
+            />
+          );
+        })}
       </nav>
 
       {/* ④ 로그아웃: 맨 아래로 */}
