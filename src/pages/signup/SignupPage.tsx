@@ -11,10 +11,12 @@ function SignupPage() {
 
   return (
     <AuthLayout>
+      {/* 제목 */}
       <h1 className="text-base font-bold text-neutral-10">회원가입</h1>
-      <p className="mt-2 text-small text-primary-10">이메일로 시작해보세요.</p>
+      <p className="mt-0.5 text-small text-primary-10">이메일로 시작해보세요.</p>
 
-      <form className="mt-8 flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+      {/* 입력 */}
+      <form className="mt-[33px] flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
         <FormField label="이메일로 시작하기">
           <Input type="email" value={email} onChange={setEmail} placeholder="example@email.com" />
         </FormField>
@@ -27,12 +29,13 @@ function SignupPage() {
           <Input value={nickname} onChange={setNickname} placeholder="닉네임" />
         </FormField>
 
-        <Button type="submit" size="lg" fullWidth className="mt-2">
+        <Button type="submit" size="lg" fullWidth className="mt-[13px]">
           가입하기
         </Button>
       </form>
 
-      <p className="mt-6 text-[16px] leading-[24px] text-neutral-70">
+      {/* 아래 안내 */}
+      <p className="mt-2.5 text-small text-neutral-60">
         이미 계정이 있나요?{" "}
         <button type="button" className="text-primary-10">
           로그인

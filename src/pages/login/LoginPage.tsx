@@ -11,12 +11,12 @@ function LoginPage() {
 
   return (
     <AuthLayout>
-      <h1 className="flex items-center gap-2 text-base font-bold text-neutral-10">
-        <img src={logoTextUrl} alt="짝공" className="h-8" />
+      <h1 className="flex items-center gap-[9px] text-base font-bold text-neutral-10">
+        <img src={logoTextUrl} alt="짝공" className="h-[34px]" />
         로그인
       </h1>
 
-      <form className="mt-8 flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+      <form className="mt-[23px] flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
         <FormField label="이메일">
           <Input type="email" value={email} onChange={setEmail} placeholder="example@email.com" />
         </FormField>
@@ -25,13 +25,13 @@ function LoginPage() {
           <Input type="password" value={password} onChange={setPassword} placeholder="비밀번호" />
         </FormField>
 
-        <Button type="submit" size="lg" fullWidth className="mt-2">
+        <Button type="submit" size="lg" fullWidth className="mt-[13px]">
           로그인
         </Button>
       </form>
 
-      <div className="mt-6 flex items-center justify-between text-[16px] leading-[24px]">
-        <button type="button" className="text-neutral-70">
+      <div className="mt-2.5 flex items-center justify-between text-small">
+        <button type="button" className="text-neutral-60">
           비밀번호를 잊으셨나요?
         </button>
         <button type="button" className="text-primary-10">

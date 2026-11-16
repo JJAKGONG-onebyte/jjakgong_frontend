@@ -14,8 +14,8 @@ const variantStyles = {
     off: "bg-neutral-100 border-neutral-90",
   },
   filled: {
-    on: "bg-primary-10 border-primary-10 text-white",
-    off: "bg-white border-neutral-90 text-neutral-10",
+    on: "bg-primary-10 border-primary-10 text-neutral-100 shadow-50",
+    off: "bg-neutral-100 border-neutral-70 text-neutral-10",
   },
 };
 
@@ -27,8 +27,8 @@ function SelectCard({ children, selected = false, onClick, variant = "outline" }
       type="button"
       aria-pressed={selected}
       onClick={onClick}
-      className={`flex flex-col items-center justify-center gap-2
-        w-full p-4 rounded-[12px] border transition-colors
+      className={`flex flex-col items-center gap-2
+        w-full p-4 rounded-[10px] border-2 transition-colors
         ${selected ? styles.on : styles.off}`}
     >
       {children}
