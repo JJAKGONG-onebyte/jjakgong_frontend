@@ -10,16 +10,16 @@ function PasswordResetPage() {
   return (
     <AuthLayout>
       <h1 className="text-base font-bold text-neutral-10">비밀번호 재설정</h1>
-      <p className="mt-2 text-[16px] leading-[24px] text-neutral-70">
-        가입한 이메일을 입력하면 비밀번호 재설정 링크를 보내드려요.
+      <p className="mt-0.5 text-small text-neutral-60">
+        가입한 이메일 주소로 비밀번호 재설정 링크를 보내드려요.
       </p>
 
-      <form className="mt-8 flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-        <FormField label="이메일">
+      <form className="mt-[33px] flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
+        <FormField label="가입한 이메일">
           <Input type="email" value={email} onChange={setEmail} placeholder="example@email.com" />
         </FormField>
 
-        <Button type="submit" size="lg" fullWidth className="mt-2">
+        <Button type="submit" size="lg" fullWidth className="mt-[13px]">
           확인
         </Button>
       </form>
