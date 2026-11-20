@@ -1,14 +1,37 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WebcamView from "./components/WebcamView";
+import EndLearningModal from "./components/EndLearningModal";
+import CharacterBubble from "./components/CharacterBubble";
+import { useCharacterReaction } from "./hooks/useCharacterReaction";
 import { learningPageAMockData as mock } from "./data/learningMockData";
 import PdfViewer from "./components/PdfViewer";
-import type { LearningMode, LearningTab } from "./types/learning";
+import type { LearningMode, LearningTab } from "../../types/learning";
 
 function LearningPageB() {
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [mode, setMode] = useState<LearningMode>("material");
   const [activeTab, setActiveTab] = useState<LearningTab>("chat");
+  const [showEndModal, setShowEndModal] = useState(false);
+  // 캐릭터 반응 메시지 (집중 트래킹이 켜져 있을 때만 수신)
+  const { reaction } = useCharacterReaction(cameraEnabled);
+  const [chatInput, setChatInput] = useState("");
+  // 백엔드 연동 전까지는 보낸 질문을 화면에만 쌓아둔다
+  const [sentQuestions, setSentQuestions] = useState<string[]>([]);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 첫 화면에서는 스크롤하지 않고, 질문을 보냈을 때만 맨 아래로
+    if (sentQuestions.length === 0) return;
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [sentQuestions]);
+
+  const handleSend = () => {
+    const text = chatInput.trim();
+    if (!text) return;
+    setSentQuestions((prev) => [...prev, text]);
+    setChatInput("");
+  };
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#F4F6FF] text-[#0D0D0D]">
@@ -114,9 +137,10 @@ function LearningPageB() {
               {mock.characterName}
             </span>
 
-            <div className="absolute left-2 top-8 rounded-[5px] border border-[#2B52FF] bg-white px-2 py-1 text-[10px] text-[#2B52FF]">
-              잘하고 있어!
-            </div>
+            <CharacterBubble
+              reaction={reaction}
+              className="absolute left-2 right-2 top-8"
+            />
           </section>
 
           {/* 사용자 웹캠 */}
@@ -187,6 +211,16 @@ function LearningPageB() {
                   >
                     문제 만들기
                   </button>
+
+                  {/* 새로 보낸 질문 (답변은 백엔드 연동 후) */}
+                  {sentQuestions.map((question, index) => (
+                    <div key={index} className="flex justify-end">
+                      <div className="max-w-[90%] whitespace-pre-wrap break-words rounded-[5px] bg-[#2B52FF] px-3 py-2 text-[10px] text-white">
+                        {question}
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={chatEndRef} />
                 </>
               ) : (
                 <div className="text-[11px] text-[#797980]">
@@ -197,13 +231,26 @@ function LearningPageB() {
 
             {/* 질문 입력 */}
             <div className="mt-3 flex h-[34px] shrink-0 items-center gap-2">
-              <div className="flex h-full min-w-0 flex-1 items-center overflow-hidden rounded-[8px] border border-[#BEBEC8] bg-[#F8F9FA] px-2 text-[10px] text-[#797980]">
-                {mock.chatPlaceholder}
-              </div>
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyDown={(e) => {
+                  // 한글 조합 중 Enter는 무시 (마지막 글자 중복 전송 방지)
+                  if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                placeholder={mock.chatPlaceholder}
+                className="h-full min-w-0 flex-1 rounded-[8px] border border-[#BEBEC8] bg-[#F8F9FA] px-2 text-[10px] text-[#0D0D0D] outline-none placeholder:text-[#797980] focus:border-[#2B52FF]"
+              />
 
               <button
                 type="button"
-                className="h-full shrink-0 rounded-full bg-[#2B52FF] px-3 text-[10px] font-bold text-white"
+                onClick={handleSend}
+                disabled={!chatInput.trim()}
+                className="h-full shrink-0 rounded-full bg-[#2B52FF] px-3 text-[10px] font-bold text-white disabled:opacity-50"
               >
                 전송
               </button>
@@ -238,11 +285,21 @@ function LearningPageB() {
 
         <button
           type="button"
+          onClick={() => setShowEndModal(true)}
           className="h-[50px] w-full rounded-full bg-[#F5383B] text-[16px] font-bold text-white sm:w-[199px] lg:h-[60px] lg:text-[18px]"
         >
           학습 종료하기
         </button>
       </footer>
+
+      {/* 학습 종료 팝업 */}
+      <EndLearningModal
+        open={showEndModal}
+        summary={mock.endSummary}
+        onContinue={() => setShowEndModal(false)}
+        // TODO: 홈 페이지가 생기면 홈으로 이동 + 학습 기록 저장 API 호출
+        onEnd={() => (window.location.href = "/settings")}
+      />
     </div>
   );
 }

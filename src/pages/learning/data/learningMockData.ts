@@ -1,4 +1,4 @@
-import { QuizOption } from "../types/learning";
+import { QuizOption } from "../../../types/learning";
 
 export const learningPageAMockData = {
   userName: "송 눈송님",
@@ -54,9 +54,17 @@ export const learningPageAMockData = {
 
   materialPlaceholder: "선택한 학습 자료를 이 영역에서 확인할 수 있습니다.",
 
+  // 졸음 알림 제목 (문구는 캐릭터 반응 데이터에서 받아옴)
   drowsinessAlert: {
     title: "졸음 감지",
-    message: "졸려 보이네. 잠깐 쉬었다 할까?",
+  },
+
+  // 학습 종료 팝업 요약 (백엔드 연동 전 임시값)
+  endSummary: {
+    sessionTime: "32분 10초",
+    quizResult: "총 5문제 (정답 3개 / 오답 2개)",
+    todayTotalTime: "32분 10초",
+    exp: "+32 EXP",
   },
 
   controls: {
