@@ -2,6 +2,7 @@
 import React from "react";
 import LearningPageA from "./pages/learning/LearningPageA";
 import LearningPageB from "./pages/learning/LearningPageB";
+import StartLearningModal from "./pages/learning/components/StartLearningModal";
 import StudySettingsPage from "./pages/settings/StudySettingsPage";
 import SignupPage from "./pages/signup/SignupPage";
 import CharacterSelectPage from "./pages/signup/CharacterSelectPage";
@@ -22,6 +23,22 @@ function App() {
 // 라우터 도입 전 임시 분기: /studyB 로 접속하면 학습 페이지 B
   if (path === "/studyB") {
     return <LearningPageB />;
+  }
+
+// 라우터 도입 전 임시 분기: /start 로 접속하면 학습 시작 팝업 (홈 페이지가 생기면 홈의 버튼에서 띄우기)
+  if (path === "/start") {
+    return (
+      <div className="min-h-screen bg-primary-90">
+        <StartLearningModal
+          open
+          onClose={() => window.history.back()}
+          // TODO: 선택한 자료/시간/웹캠 설정을 학습 세션 생성 API로 보내기
+          onStart={(options) => {
+            window.location.href = options.mode === "video" ? "/studyA" : "/studyB";
+          }}
+        />
+      </div>
+    );
   }
 
   if (path === "/signup") {
