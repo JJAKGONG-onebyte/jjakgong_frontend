@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 type ButtonProps = {
   children: ReactNode;
-  variant?: "primary" | "outline" | "danger";
+  variant?: "primary" | "outline" | "white" | "danger";
   size?: "sm" | "lg";
   icon?: ReactNode;
   fullWidth?: boolean;
@@ -15,6 +15,7 @@ type ButtonProps = {
 const variantStyles = {
   primary: "bg-primary-10 text-white", // 가입하기, 로그인, 저장, 업로드
   outline: "bg-white border border-neutral-80 text-neutral-70",
+  white: "bg-neutral-100 text-neutral-10 shadow-50",
   danger: "bg-ter-80 text-white", // 모달 "삭제"
 };
 

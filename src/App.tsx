@@ -8,6 +8,7 @@ import SignupPage from "./pages/signup/SignupPage";
 import CharacterSelectPage from "./pages/signup/CharacterSelectPage";
 import LoginPage from "./pages/login/LoginPage";
 import PasswordResetPage from "./pages/login/PasswordResetPage";
+import HomePage from "./pages/home/HomePage";
 
 // 라우터 도입 전 임시 분기: /settings 로 접속하면 학습 설정 페이지
 function App() {
@@ -52,6 +53,10 @@ function App() {
   }
   if (path === "/login/reset") {
     return <PasswordResetPage />;
+  }
+  
+  if (path === "/home") {
+    return <HomePage />;
   }
 
   return <LearningPageA />;

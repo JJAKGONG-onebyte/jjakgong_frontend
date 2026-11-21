@@ -33,6 +33,7 @@ module.exports = {
 
       fontFamily: {
         sans: ['"Pretendard Variable"', "Pretendard", ...defaultTheme.fontFamily.sans],
+        handwriting: ['"UhBee ZZIBA"'],
       },
 
       fontSize: {
