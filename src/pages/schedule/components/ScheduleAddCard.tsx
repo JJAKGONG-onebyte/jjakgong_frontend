@@ -5,12 +5,8 @@ import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { ReactComponent as CalendarAddOnIcon } from "../../../assets/icons/calendar-add-on.svg";
 import { Priority } from "../../../types/schedule";
+import PriorityPicker from "./PriorityPicker";
 
-const priorityOptions: { value: Priority; label: string }[] = [
-  { value: "high", label: "높음" },
-  { value: "medium", label: "보통" },
-  { value: "low", label: "낮음" },
-];
 
 function ScheduleAddCard() {
   const [title, setTitle] = useState("");
@@ -51,27 +47,7 @@ function ScheduleAddCard() {
 
         <div className="flex flex-col gap-2.5">
           <span className="text-small font-bold text-neutral-60">우선순위</span>
-          <div className="flex gap-[15px]">
-            {priorityOptions.map((option) => {
-              const selected = priority === option.value;
-
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setPriority(option.value)}
-                  className={`h-[33px] rounded-full px-[15px] text-small ${
-                    selected
-                      ? "bg-primary-10 font-bold text-neutral-100 shadow-50"
-                      : "bg-primary-90 text-neutral-60 ring-1 ring-inset ring-neutral-60"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
-          </div>
+          <PriorityPicker value={priority} onChange={setPriority} />
         </div>
 
         <FormField label="반복">

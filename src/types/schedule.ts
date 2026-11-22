@@ -7,4 +7,6 @@ export type Schedule = {
   time?: string;
   priority: Priority;
   done: boolean;
+  repeat?: string;
+  repeatEnd?: string;
 };
