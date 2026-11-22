@@ -8,7 +8,7 @@ import StreakCard from "./components/StreakCard";
 import RecentRecordsCard from "./components/RecentRecordsCard";
 import { homeMockData as mock } from "./data/homeMockData";
 import { navigateToMenu } from "../../utils/navigation";
-import StartLearningModal from "../learning/components/StartLearningModal";
+import StartLearningModal, { getLearningPath } from "../learning/components/StartLearningModal";
 
 function HomePage() {
   const [showStartModal, setShowStartModal] = useState(false);
@@ -50,7 +50,7 @@ function HomePage() {
         onClose={() => setShowStartModal(false)}
         // TODO: 선택한 자료/시간/웹캠 설정을 학습 세션 생성 API로 보내기
         onStart={(options) => {
-          window.location.href = options.mode === "video" ? "/studyA" : "/studyB";
+          window.location.href = getLearningPath(options);
         }}
       />
     </MainLayout>

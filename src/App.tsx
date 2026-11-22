@@ -2,7 +2,7 @@
 import React from "react";
 import LearningPageA from "./pages/learning/LearningPageA";
 import LearningPageB from "./pages/learning/LearningPageB";
-import StartLearningModal from "./pages/learning/components/StartLearningModal";
+import StartLearningModal, { getLearningPath } from "./pages/learning/components/StartLearningModal";
 import StudySettingsPage from "./pages/settings/StudySettingsPage";
 import MaterialsPage from "./pages/materials/MaterialsPage";
 import SignupPage from "./pages/signup/SignupPage";
@@ -40,7 +40,7 @@ function App() {
           onClose={() => window.history.back()}
           // TODO: 선택한 자료/시간/웹캠 설정을 학습 세션 생성 API로 보내기
           onStart={(options) => {
-            window.location.href = options.mode === "video" ? "/studyA" : "/studyB";
+            window.location.href = getLearningPath(options);
           }}
         />
       </div>

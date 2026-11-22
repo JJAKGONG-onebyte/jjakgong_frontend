@@ -4,6 +4,7 @@ import WebcamView from "./components/WebcamView";
 import EndLearningModal from "./components/EndLearningModal";
 import CharacterBubble from "./components/CharacterBubble";
 import { useCharacterReaction } from "./hooks/useCharacterReaction";
+import { useSelectedMaterial } from "./hooks/useSelectedMaterial";
 import { learningPageAMockData as mock } from "./data/learningMockData";
 import PdfViewer from "./components/PdfViewer";
 import type { LearningMode, LearningTab } from "../../types/learning";
@@ -13,6 +14,9 @@ function LearningPageB() {
   const [mode, setMode] = useState<LearningMode>("material");
   const [activeTab, setActiveTab] = useState<LearningTab>("chat");
   const [showEndModal, setShowEndModal] = useState(false);
+  // 학습 시작 팝업에서 고른 자료 (?material=ID). 업로드한 파일이 없으면 목업 자료를 보여준다.
+  const { file: materialFile, loading: materialLoading } = useSelectedMaterial();
+  const materialName = materialFile?.name ?? mock.materialName;
   // 캐릭터 반응 메시지 (집중 트래킹이 켜져 있을 때만 수신)
   const { reaction } = useCharacterReaction(cameraEnabled);
   const [chatInput, setChatInput] = useState("");
@@ -54,7 +58,7 @@ function LearningPageB() {
           </div>
 
           <div className="whitespace-nowrap rounded-full bg-[#2B52FF] px-[15px] py-[3px] text-sm text-white lg:text-[18px]">
-            자료 : {mock.materialName}
+            자료 : {materialName}
           </div>
           {/* 집중 트래킹 */}
           <span className="shrink-0 whitespace-nowrap rounded-full bg-[#0AE1DA] px-[10px] py-[2px] text-[14px]">
@@ -121,7 +125,7 @@ function LearningPageB() {
       {/* 메인 영역 */}
       <main className="grid grid-cols-1 gap-4 px-4 py-4 lg:min-h-[calc(100vh-173px)] lg:grid-cols-[minmax(0,3.35fr)_minmax(260px,1fr)] lg:gap-4 lg:px-[1.5%] lg:py-4">
         {/* PDF 학습 자료 영역 */}
-        <PdfViewer fileName={mock.materialName} />
+        <PdfViewer fileName={materialName} file={materialFile} loading={materialLoading} />
 
         {/* 오른쪽 사이드 영역 */}
         <aside className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-col">
@@ -267,13 +271,6 @@ function LearningPageB() {
           className="h-[50px] w-full rounded-full border border-[#797980] bg-[#F8F9FA] text-[16px] sm:w-[199px] lg:h-[60px] lg:text-[18px]"
         >
           카메라(집중 트래킹) {cameraEnabled ? "ON" : "OFF"}
-        </button>
-
-        <button
-          type="button"
-          className="h-[50px] w-full rounded-full border border-[#797980] bg-[#F8F9FA] text-[16px] sm:w-[199px] lg:h-[60px] lg:text-[18px]"
-        >
-          학습 자료 보기
         </button>
 
         <button

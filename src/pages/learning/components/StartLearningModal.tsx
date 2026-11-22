@@ -7,6 +7,7 @@ import { loadStudySettings } from "../../settings/data/studySettings";
 import { startLearningMockMaterials, webcamPermissionLabel } from "../data/startLearningMockData";
 import type { LearningMode, StudyMaterial } from "../../../types/learning";
 import { formatFileSize } from "../../../utils/formatFileSize";
+import { saveMaterialFile } from "../../../services/materialFileStore";
 
 export type StartLearningOptions = {
   materialId: string | null; // null = 자료 없이 학습
@@ -15,6 +16,12 @@ export type StartLearningOptions = {
   mode: LearningMode;
   webcamTracking: boolean;
 };
+
+// 선택한 모드와 자료로 학습화면 주소를 만든다 (예: /studyB?material=local-123)
+export function getLearningPath({ mode, materialId }: StartLearningOptions): string {
+  const path = mode === "video" ? "/studyA" : "/studyB";
+  return materialId ? `${path}?material=${encodeURIComponent(materialId)}` : path;
+}
 
 type StartLearningModalProps = {
   open: boolean;
@@ -139,16 +146,20 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
     setWebcamTracking(settings.webcamTracking);
   }, [open]);
 
-  const handleUpload = (file: File | undefined) => {
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleUpload = async (file: File | undefined) => {
     if (!file) return;
-    // 업로드 API 연동 전: 목록에만 추가하고 바로 선택
-    const newMaterial: StudyMaterial = {
-      id: `local-${Date.now()}`,
-      name: file.name,
-      size: formatFileSize(file.size),
-    };
-    setMaterials((prev) => [...prev, newMaterial]);
-    setMaterialId(newMaterial.id);
+    setUploadError(null);
+    try {
+      // 업로드 API 연동 전: 브라우저 저장소에 보관하고 그 ID로 목록에 추가
+      const id = await saveMaterialFile(file);
+      const newMaterial: StudyMaterial = { id, name: file.name, size: formatFileSize(file.size) };
+      setMaterials((prev) => [...prev, newMaterial]);
+      setMaterialId(id);
+    } catch {
+      setUploadError("자료를 저장하지 못했어요. 브라우저 저장소를 쓸 수 없는 환경(시크릿 모드 등)인지 확인해주세요.");
+    }
   };
 
   return (
@@ -193,6 +204,11 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
             />
           </label>
         </div>
+        {uploadError && (
+          <p role="alert" className="mt-2 text-caption font-medium text-ter-80">
+            {uploadError}
+          </p>
+        )}
       </section>
 
       {/* 학습 시간 */}
