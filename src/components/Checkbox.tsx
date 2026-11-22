@@ -13,15 +13,15 @@ function Checkbox({ checked = false, onClick }: CheckboxProps) {
       role="checkbox"
       aria-checked={checked}
       onClick={onClick}
-      className={`inline-flex items-center justify-center
-        w-6 h-6 rounded-md border transition-colors
+      className={`inline-flex shrink-0 items-center justify-center
+        w-[21px] h-[21px] rounded-[5px] border transition-colors
         ${
           checked
-            ? "bg-primary-10 border-primary-10 text-white"
-            : "bg-neutral-100 border-neutral-90 text-transparent"
+            ? "bg-primary-10 border-primary-10 text-neutral-100 shadow-50"
+            : "bg-neutral-100 border-neutral-60 text-transparent"
         }`}
     >
-      <CheckIcon className="w-4 h-4" />
+      <CheckIcon className="w-3.5 h-3.5" />
     </button>
   );
 }
