@@ -297,8 +297,8 @@ function LearningPageB() {
         open={showEndModal}
         summary={mock.endSummary}
         onContinue={() => setShowEndModal(false)}
-        // TODO: 홈 페이지가 생기면 홈으로 이동 + 학습 기록 저장 API 호출
-        onEnd={() => (window.location.href = "/settings")}
+        // TODO: 학습 기록 저장 API 호출
+        onEnd={() => (window.location.href = "/home")}
       />
     </div>
   );

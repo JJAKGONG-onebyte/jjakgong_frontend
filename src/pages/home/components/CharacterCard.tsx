@@ -6,9 +6,10 @@ import characterImage from "../../../assets/home/home-character.png";
 
 type CharacterCardProps = {
   subject: string;
+  onStartLearning: () => void;
 };
 
-function CharacterCard({ subject }: CharacterCardProps) {
+function CharacterCard({ subject, onStartLearning }: CharacterCardProps) {
   return (
     <HomeCard
       title="짝공과 함께해요!"
@@ -38,9 +39,9 @@ function CharacterCard({ subject }: CharacterCardProps) {
       </div>
 
       <div className="absolute inset-x-9 bottom-7 z-10">
-        {/* TODO: StartLearningModal 연결 (#19) */}
         <Button
           fullWidth
+          onClick={onStartLearning}
           className="shadow-50"
           icon={<MenuBookIcon className="h-3 w-[17px]" />}
         >
