@@ -10,6 +10,7 @@ import CharacterSelectPage from "./pages/signup/CharacterSelectPage";
 import LoginPage from "./pages/login/LoginPage";
 import PasswordResetPage from "./pages/login/PasswordResetPage";
 import HomePage from "./pages/home/HomePage";
+import SchedulePage from "./pages/schedule/SchedulePage";
 
 // 라우터 도입 전 임시 분기: /settings 로 접속하면 학습 설정 페이지
 function App() {
@@ -62,6 +63,9 @@ function App() {
   
   if (path === "/home") {
     return <HomePage />;
+  }
+    if (path === "/schedules") {
+    return <SchedulePage />;
   }
 
   return <LearningPageA />;
