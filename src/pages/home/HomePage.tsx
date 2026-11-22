@@ -6,11 +6,12 @@ import TodayStudyTimeCard from "./components/TodayStudyTimeCard";
 import StreakCard from "./components/StreakCard";
 import RecentRecordsCard from "./components/RecentRecordsCard";
 import { homeMockData as mock } from "./data/homeMockData";
+import { navigateToMenu } from "../../utils/navigation";
 
 function HomePage() {
   return (
-    // TODO: 라우터 도입 후 메뉴 이동 연결
-    <MainLayout activeMenu="홈" onMenuClick={() => {}} userName={mock.userName}>
+    // 라우터 도입 전 임시 이동 (utils/navigation.ts)
+    <MainLayout activeMenu="홈" onMenuClick={navigateToMenu} userName={mock.userName}>
       <div className="pt-[9px]">
         <div className="h-[203px]">
           <HomeBanner />

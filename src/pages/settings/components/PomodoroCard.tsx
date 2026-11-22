@@ -33,6 +33,11 @@ function PomodoroCard({ savedValues, onSave }: PomodoroCardProps) {
   const [inputText, setInputText] = useState<string | null>(null);
   const [justSaved, setJustSaved] = useState(false);
 
+  // 저장된 값이 바뀌면(다른 탭에서 저장 등) 편집 중인 값도 맞춰줌
+  useEffect(() => {
+    setDraft({ studyMinutes: savedValues.studyMinutes, breakMinutes: savedValues.breakMinutes });
+  }, [savedValues.studyMinutes, savedValues.breakMinutes]);
+
   const config = TIMER_CONFIG[mode];
   const minutes = draft[minutesKey(mode)];
 

@@ -1,26 +1,18 @@
-import { useState } from "react";
 import MainLayout from "../../components/MainLayout";
 import PomodoroCard, { TimerValues } from "./components/PomodoroCard";
 import WebcamTrackingCard from "./components/WebcamTrackingCard";
 import WeeklyStudyCard from "./components/WeeklyStudyCard";
 import StreakCard from "./components/StreakCard";
-import { loadStudySettings, saveStudySettings, StudySettings } from "./data/studySettings";
+import { useStudySettings } from "../../contexts/StudySettingsContext";
+import { navigateToMenu } from "../../utils/navigation";
 import { settingsMockData as mock } from "./data/settingsMockData";
 
 type StudySettingsPageProps = {
   onMenuClick?: (label: string) => void;
 };
 
-function StudySettingsPage({ onMenuClick = () => {} }: StudySettingsPageProps) {
-  const [settings, setSettings] = useState<StudySettings>(loadStudySettings);
-
-  const updateSettings = (patch: Partial<StudySettings>) => {
-    setSettings((prev) => {
-      const next = { ...prev, ...patch };
-      saveStudySettings(next);
-      return next;
-    });
-  };
+function StudySettingsPage({ onMenuClick = navigateToMenu }: StudySettingsPageProps) {
+  const { settings, updateSettings } = useStudySettings();
 
   const handleTimerSave = (values: TimerValues) => updateSettings(values);
 

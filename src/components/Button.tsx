@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 type ButtonProps = {
   children: ReactNode;
   variant?: "primary" | "outline" | "white" | "danger";
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
   icon?: ReactNode;
   fullWidth?: boolean;
   disabled?: boolean;
@@ -22,6 +22,7 @@ const variantStyles = {
 
 const sizeStyles = {
   sm: "h-[33px] px-[15px] text-caption",
+  md: "h-[40px] px-5 text-caption", // 학습 자료 "자료 업로드"
   lg: "h-[60px] px-6 text-small",
 };
 

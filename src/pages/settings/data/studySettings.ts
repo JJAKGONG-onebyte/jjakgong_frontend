@@ -27,11 +27,11 @@ export const clampMinutes = (mode: TimerMode, minutes: number) => {
 };
 
 // 백엔드 API가 생기기 전까지는 브라우저(localStorage)에 저장
-const STORAGE_KEY = "jjakgong:studySettings";
+export const STUDY_SETTINGS_STORAGE_KEY = "jjakgong:studySettings";
 
 export function loadStudySettings(): StudySettings {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STUDY_SETTINGS_STORAGE_KEY);
     if (!raw) return DEFAULT_SETTINGS;
 
     const parsed = JSON.parse(raw) as Partial<StudySettings>;
@@ -47,7 +47,7 @@ export function loadStudySettings(): StudySettings {
 
 export function saveStudySettings(settings: StudySettings) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    localStorage.setItem(STUDY_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
   } catch {
     // 저장소를 쓸 수 없는 환경(시크릿 모드 등)에서는 무시
   }

@@ -4,6 +4,7 @@ import LearningPageA from "./pages/learning/LearningPageA";
 import LearningPageB from "./pages/learning/LearningPageB";
 import StartLearningModal from "./pages/learning/components/StartLearningModal";
 import StudySettingsPage from "./pages/settings/StudySettingsPage";
+import MaterialsPage from "./pages/materials/MaterialsPage";
 import SignupPage from "./pages/signup/SignupPage";
 import CharacterSelectPage from "./pages/signup/CharacterSelectPage";
 import LoginPage from "./pages/login/LoginPage";
@@ -16,6 +17,10 @@ function App() {
 
   if (path.startsWith("/settings")) {
     return <StudySettingsPage />;
+  }
+  // 라우터 도입 전 임시 분기: /materials 로 접속하면 학습 자료 관리 페이지
+  if (path.startsWith("/materials")) {
+    return <MaterialsPage />;
   }
 // 라우터 도입 전 임시 분기: /studyA 로 접속하면 학습 페이지 A
   if (path === "/studyA") {
