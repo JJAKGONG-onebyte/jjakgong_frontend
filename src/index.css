@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "UhBee ZZIBA";
+  src: url("./assets/fonts/UhBeeZZIBA-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-display: swap;
+}
