@@ -1,5 +1,3 @@
-import { QuizOption } from "../../../types/learning";
-
 export const learningPageAMockData = {
   userName: "송 눈송님",
 
@@ -21,43 +19,7 @@ export const learningPageAMockData = {
     ],
   },
 
-  quiz: {
-    title: "Q1. 다음 중 스케일링 알고리즘이 아닌 것은?",
-    options: [
-      {
-        id: 1,
-        text: "① FCFS",
-        status: "default",
-      },
-      {
-        id: 2,
-        text: "② Round Robin",
-        status: "incorrect",
-        label: "오답",
-      },
-      {
-        id: 3,
-        text: "③ Paging",
-        status: "correct",
-        label: "정답",
-      },
-      {
-        id: 4,
-        text: "④ SJF",
-        status: "default",
-      },
-    ] as QuizOption[],
-    explanation: "해설 : Paging은 메모리 관리 기법이에요.",
-  },
-
   chatPlaceholder: "궁금한 걸 물어보세요.",
-
-  materialPlaceholder: "선택한 학습 자료를 이 영역에서 확인할 수 있습니다.",
-
-  // 졸음 알림 제목 (문구는 캐릭터 반응 데이터에서 받아옴)
-  drowsinessAlert: {
-    title: "졸음 감지",
-  },
 
   // 학습 종료 팝업 요약 (백엔드 연동 전 임시값)
   endSummary: {

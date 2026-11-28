@@ -18,7 +18,7 @@ export type StartLearningOptions = {
 };
 
 // 선택한 모드와 자료로 학습화면 주소를 만든다 (예: /studyB?material=local-123)
-export function getLearningPath({ mode, materialId }: StartLearningOptions): string {
+export function getLearningPath({ mode, materialId }: Pick<StartLearningOptions, "mode" | "materialId">): string {
   const path = mode === "video" ? "/studyA" : "/studyB";
   return materialId ? `${path}?material=${encodeURIComponent(materialId)}` : path;
 }
@@ -79,20 +79,23 @@ function ModeCard({
   description,
   illustration,
   onClick,
+  disabled = false,
 }: {
   selected: boolean;
   title: string;
   description: string;
   illustration: ReactNode;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       role="radio"
       aria-checked={selected}
+      disabled={disabled}
       onClick={onClick}
-      className={`relative h-[160px] w-full overflow-hidden rounded-[15px] text-center transition-colors ${
+      className={`relative h-[160px] w-full overflow-hidden rounded-[15px] text-center transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
         selected
           ? "border-2 border-primary-10 bg-primary-90 shadow-50"
           : "border border-neutral-60 bg-neutral-100"
@@ -148,6 +151,12 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
 
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+  // 자료 집중형은 자료가 있어야 쓸 수 있다. "자료 없이 학습하기"를 고르면 영상 통화형으로 돌린다.
+  const selectMaterial = (id: string | null) => {
+    setMaterialId(id);
+    if (id === null) setMode("video");
+  };
+
   const handleUpload = async (file: File | undefined) => {
     if (!file) return;
     setUploadError(null);
@@ -176,7 +185,7 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
           <MaterialOption
             selected={materialId === null}
             label="자료 없이 학습하기"
-            onClick={() => setMaterialId(null)}
+            onClick={() => selectMaterial(null)}
           />
           {materials.map((material) => (
             <MaterialOption
@@ -184,7 +193,7 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
               selected={materialId === material.id}
               label={material.name}
               size={material.size}
-              onClick={() => setMaterialId(material.id)}
+              onClick={() => selectMaterial(material.id)}
             />
           ))}
         </div>
@@ -248,7 +257,8 @@ function StartLearningModal({ open, onClose, onStart }: StartLearningModalProps)
           <ModeCard
             selected={mode === "material"}
             title="자료 집중형"
-            description="자료 크게 보기"
+            description={materialId === null ? "자료를 선택하면 쓸 수 있어요" : "자료 크게 보기"}
+            disabled={materialId === null}
             onClick={() => setMode("material")}
             illustration={
               <img

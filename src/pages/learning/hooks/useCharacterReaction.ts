@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { subscribeCharacterReactions } from "../../../services/characterReactionService";
-import type { CharacterReaction, CharacterReactionType } from "../../../types/learning";
+import { sendReactionFeedback, subscribeCharacterReactions } from "../../../services/characterReactionService";
+import type {
+  CharacterReaction,
+  CharacterReactionFeedback,
+  CharacterReactionType,
+} from "../../../types/learning";
 
 // 한 반응을 최소 이만큼은 보여준 뒤에 같은 우선순위 반응으로 바꾼다 (깜빡임 방지)
 const MIN_DISPLAY_MS = 5_000;
@@ -8,10 +12,11 @@ const MIN_DISPLAY_MS = 5_000;
 // 종류별로 화면에 머무는 시간. 지나면 자동으로 사라진다.
 export const REACTION_DISPLAY_MS: Record<CharacterReactionType, number> = {
   drowsy: 30_000,
-  distracted: 15_000,
+  away: 30_000,
+  gaze: 15_000,
   break: 15_000,
-  praise: 10_000,
-  idle: 10_000,
+  complete: 10_000,
+  start: 8_000,
 };
 
 /**
@@ -20,7 +25,7 @@ export const REACTION_DISPLAY_MS: Record<CharacterReactionType, number> = {
  * 표시 규칙
  * - 더 중요한 반응(priority 높음)이 오면 바로 교체
  * - 같은 중요도면 현재 반응을 최소 5초 보여준 뒤 교체
- * - 덜 중요한 반응은 무시 (예: 졸음 알림을 칭찬이 덮지 않음)
+ * - 덜 중요한 반응은 무시 (예: 졸음 알림을 학습 시작 인사가 덮지 않음)
  * - 종류별 표시 시간이 지나면 자동으로 사라짐
  *
  * @param enabled 집중 트래킹이 꺼져 있으면 반응을 받지 않는다.
@@ -94,5 +99,13 @@ export function useCharacterReaction(enabled = true) {
   // X 버튼 등으로 사용자가 직접 닫을 때
   const dismiss = useCallback(() => hideRef.current(), []);
 
-  return { reaction, dismiss };
+  // 카드의 버튼("자리에 있었어" / "돌아왔어!" 등): 서버에 알리고 카드를 닫는다
+  const respond = useCallback((target: CharacterReaction, feedback: CharacterReactionFeedback) => {
+    sendReactionFeedback(target.id, feedback).catch(() => {
+      // 응답 전송 실패는 학습을 방해하지 않도록 조용히 넘어간다
+    });
+    hideRef.current();
+  }, []);
+
+  return { reaction, dismiss, respond };
 }

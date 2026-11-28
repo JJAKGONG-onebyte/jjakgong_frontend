@@ -55,16 +55,9 @@ module.exports = {
           from: { opacity: "0", transform: "translate(-50%, 16px)" },
           to: { opacity: "1", transform: "translate(-50%, 0)" },
         },
-        // 캐릭터 말풍선이 바뀔 때 톡 튀어나오는 효과
-        "bubble-pop": {
-          "0%": { opacity: "0", transform: "scale(0.6)" },
-          "70%": { opacity: "1", transform: "scale(1.06)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
       },
       animation: {
         "toast-in": "toast-in 0.3s ease-out both",
-        "bubble-pop": "bubble-pop 0.35s ease-out both",
       },
     },
   },

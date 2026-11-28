@@ -1,41 +1,28 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import WebcamView from "./components/WebcamView";
 import EndLearningModal from "./components/EndLearningModal";
-import CharacterBubble from "./components/CharacterBubble";
+import CharacterReactionCard from "./components/CharacterReactionCard";
+import AiChatPanel from "./components/AiChatPanel";
 import { useCharacterReaction } from "./hooks/useCharacterReaction";
 import { useSelectedMaterial } from "./hooks/useSelectedMaterial";
 import { learningPageAMockData as mock } from "./data/learningMockData";
+import { getLearningPath } from "./components/StartLearningModal";
 import PdfViewer from "./components/PdfViewer";
-import type { LearningMode, LearningTab } from "../../types/learning";
+import type { LearningMode } from "../../types/learning";
+
+// "자료 선택하기": 학습 시작 팝업에서 자료를 다시 고른다
+const goToMaterialSelect = () => window.location.assign("/start");
 
 function LearningPageB() {
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [mode, setMode] = useState<LearningMode>("material");
-  const [activeTab, setActiveTab] = useState<LearningTab>("chat");
   const [showEndModal, setShowEndModal] = useState(false);
   // 학습 시작 팝업에서 고른 자료 (?material=ID). 업로드한 파일이 없으면 목업 자료를 보여준다.
-  const { file: materialFile, loading: materialLoading } = useSelectedMaterial();
+  const { materialId, file: materialFile, loading: materialLoading } = useSelectedMaterial();
   const materialName = materialFile?.name ?? mock.materialName;
-  // 캐릭터 반응 메시지 (집중 트래킹이 켜져 있을 때만 수신)
-  const { reaction } = useCharacterReaction(cameraEnabled);
-  const [chatInput, setChatInput] = useState("");
-  // 백엔드 연동 전까지는 보낸 질문을 화면에만 쌓아둔다
-  const [sentQuestions, setSentQuestions] = useState<string[]>([]);
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // 첫 화면에서는 스크롤하지 않고, 질문을 보냈을 때만 맨 아래로
-    if (sentQuestions.length === 0) return;
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [sentQuestions]);
-
-  const handleSend = () => {
-    const text = chatInput.trim();
-    if (!text) return;
-    setSentQuestions((prev) => [...prev, text]);
-    setChatInput("");
-  };
+  // 캐릭터 반응 (집중 트래킹이 켜져 있을 때만 수신)
+  const { reaction, dismiss: dismissReaction, respond: respondReaction } = useCharacterReaction(cameraEnabled);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#F4F6FF] text-[#0D0D0D]">
@@ -84,7 +71,7 @@ function LearningPageB() {
             {/* 영상 통화 */}
             <button
               type="button"
-              onClick={() => (window.location.href = "/studyA")}
+              onClick={() => (window.location.href = getLearningPath({ mode: "video", materialId }))}
               className={`rounded-full px-4 py-2 text-[14px] ${
                 mode === "video"
                   ? "bg-[#2B52FF] text-white"
@@ -97,7 +84,7 @@ function LearningPageB() {
             {/* 자료 집중 */}
             <button
               type="button"
-              onClick={() => (window.location.href = "/studyB")}
+              onClick={() => (window.location.href = getLearningPath({ mode: "material", materialId }))}
               className={`rounded-full px-4 py-2 text-[14px] ${
                 mode === "material"
                   ? "bg-[#2B52FF] text-white"
@@ -123,12 +110,13 @@ function LearningPageB() {
 
 
       {/* 메인 영역 */}
-      <main className="grid grid-cols-1 gap-4 px-4 py-4 lg:min-h-[calc(100vh-173px)] lg:grid-cols-[minmax(0,3.35fr)_minmax(260px,1fr)] lg:gap-4 lg:px-[1.5%] lg:py-4">
+      {/* lg 이상: 화면 높이에 고정 (오른쪽 패널 내용이 늘어나도 PDF 칸이 커지지 않고 패널 안에서 스크롤) */}
+      <main className="grid grid-cols-1 gap-4 px-4 py-4 lg:h-[calc(100vh-173px)] lg:min-h-[632px] lg:grid-cols-[minmax(0,3.35fr)_minmax(260px,1fr)] lg:grid-rows-[minmax(0,1fr)] lg:gap-4 lg:px-[1.5%] lg:py-4">
         {/* PDF 학습 자료 영역 */}
         <PdfViewer fileName={materialName} file={materialFile} loading={materialLoading} />
 
         {/* 오른쪽 사이드 영역 */}
-        <aside className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-col">
+        <aside className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:relative lg:flex lg:min-h-0 lg:flex-col">
           {/* 캐릭터 */}
           <section className="relative h-[150px] overflow-hidden rounded-[12px] border-[4px] border-[#DCE4FF] bg-gradient-to-b from-[#2B52FF] to-[#FFC3EA] shadow-[0_0_8px_#2B52FF60] lg:h-[120px] lg:shrink-0">
             <img
@@ -140,11 +128,6 @@ function LearningPageB() {
             <span className="absolute left-2 top-2 rounded-full bg-[#2B52FF] px-2 py-1 text-[10px] text-white">
               {mock.characterName}
             </span>
-
-            <CharacterBubble
-              reaction={reaction}
-              className="absolute left-2 right-2 top-8"
-            />
           </section>
 
           {/* 사용자 웹캠 */}
@@ -159,107 +142,30 @@ function LearningPageB() {
             />
           </section>
 
-          {/* AI 문답 패널 */}
-          <section className="relative flex h-[390px] min-w-0 flex-col overflow-hidden rounded-[12px] border-[2px] border-[#DCE4FF] bg-gradient-to-b from-white to-[#EAEEFF] p-3 shadow-[0_0_8px_#2B52FF60] sm:col-span-2 lg:h-auto lg:min-h-[280px] lg:flex-1">
-            {/* 탭 */}
-            <div className="flex h-8 w-fit shrink-0 overflow-hidden rounded-full border border-[#797980] bg-[#F4F6FF]">
-              <button
-                type="button"
-                onClick={() => setActiveTab("chat")}
-                className={`px-3 text-[11px] ${
-                  activeTab === "chat"
-                    ? "bg-[#2B52FF] font-bold text-white"
-                    : "text-[#797980]"
-                }`}
-              >
-                AI 문답
-              </button>
+          {/* AI 문답 패널 (질문/답변 + AI 문제 풀이) */}
+          <AiChatPanel
+            materialId={materialId}
+            onSelectMaterial={goToMaterialSelect}
+            size="sm"
+            className="relative h-[390px] min-w-0 overflow-hidden rounded-[12px] border-[2px] border-[#DCE4FF] bg-gradient-to-b from-white to-[#EAEEFF] shadow-[0_0_8px_#2B52FF60] sm:col-span-2 lg:h-auto lg:min-h-[280px] lg:flex-1"
+          />
 
-              <button
-                type="button"
-                onClick={() => setActiveTab("material")}
-                className={`px-3 text-[11px] ${
-                  activeTab === "material"
-                    ? "bg-[#2B52FF] font-bold text-white"
-                    : "text-[#797980]"
-                }`}
-              >
-                학습 자료
-              </button>
-            </div>
-
-            {/* 대화 내용 */}
-            <div className="mt-4 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
-              {activeTab === "chat" ? (
-                <>
-                  <div className="flex justify-end">
-                    <div className="max-w-[90%] rounded-[5px] bg-[#2B52FF] px-3 py-2 text-[10px] text-white">
-                      {mock.chat.question}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="max-w-[95%] rounded-[5px] bg-[#DDDDE6] px-3 py-2 text-[10px] leading-[1.6]">
-                      {mock.chat.answer.map((line, index) => (
-                        <React.Fragment key={index}>
-                          {line}
-                          {index !== mock.chat.answer.length - 1 && <br />}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="h-8 shrink-0 rounded-full border border-[#2B52FF] text-[10px] text-[#2B52FF]"
-                  >
-                    문제 만들기
-                  </button>
-
-                  {/* 새로 보낸 질문 (답변은 백엔드 연동 후) */}
-                  {sentQuestions.map((question, index) => (
-                    <div key={index} className="flex justify-end">
-                      <div className="max-w-[90%] whitespace-pre-wrap break-words rounded-[5px] bg-[#2B52FF] px-3 py-2 text-[10px] text-white">
-                        {question}
-                      </div>
-                    </div>
-                  ))}
-                  <div ref={chatEndRef} />
-                </>
-              ) : (
-                <div className="text-[11px] text-[#797980]">
-                  {mock.materialPlaceholder}
-                </div>
-              )}
-            </div>
-
-            {/* 질문 입력 */}
-            <div className="mt-3 flex h-[34px] shrink-0 items-center gap-2">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={(e) => {
-                  // 한글 조합 중 Enter는 무시 (마지막 글자 중복 전송 방지)
-                  if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                placeholder={mock.chatPlaceholder}
-                className="h-full min-w-0 flex-1 rounded-[8px] border border-[#BEBEC8] bg-[#F8F9FA] px-2 text-[10px] text-[#0D0D0D] outline-none placeholder:text-[#797980] focus:border-[#2B52FF]"
-              />
-
-              <button
-                type="button"
-                onClick={handleSend}
-                disabled={!chatInput.trim()}
-                className="h-full shrink-0 rounded-full bg-[#2B52FF] px-3 text-[10px] font-bold text-white disabled:opacity-50"
-              >
-                전송
-              </button>
-            </div>
-          </section>
+          {/* 캐릭터 반응 알림
+              - lg 미만: 화면 하단 중앙에 고정(토스트)
+              - lg 이상: 오른쪽 열 맨 위, 캐릭터·웹캠 카드 위에 겹쳐서 표시 (PDF를 가리지 않도록) */}
+          <CharacterReactionCard
+            key={reaction?.id}
+            reaction={reaction}
+            onDismiss={dismissReaction}
+            onFeedback={respondReaction}
+            className="
+              fixed bottom-4 left-1/2 z-40
+              w-[calc(100%-32px)] max-w-[440px] -translate-x-1/2
+              motion-safe:animate-toast-in
+              lg:absolute lg:bottom-auto lg:top-0
+              lg:z-20 lg:w-full lg:max-w-none
+            "
+          />
         </aside>
       </main>
 
